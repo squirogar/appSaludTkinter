@@ -27,8 +27,9 @@ class Aplicacion(tk.Tk):
         super().__init__()
         self.title("SaludMas")
         self.protocol('WM_DELETE_WINDOW', self.avisoSalida)
-        self.resizable(False, False)
-        
+        #self.resizable(False, False)
+        #self.geometry("400x600")
+
         # contendrá un objeto Connection que se utiliza para conectar 
         # a la base de datos
         self.__conexion = None
@@ -69,8 +70,6 @@ class Aplicacion(tk.Tk):
         """
         nuevoMenu = tk.Menu(self)
         archivo = tk.Menu(self, tearoff=0) 
-        limpiar = tk.Menu(self, tearoff=0) 
-        crud = tk.Menu(self, tearoff=0) 
         ayuda = tk.Menu(self, tearoff=0) 
 
         archivo.add_command(label="Cerrar Sesión", command=self.__cerrarSesion)
@@ -81,9 +80,7 @@ class Aplicacion(tk.Tk):
         ayuda.add_command(label="Licencia", command=self.avisoLicencia)
         ayuda.add_command(label="Acerca de", command=self.avisoAcercaDe)
         
-        nuevoMenu.add_cascade(label="BBDD", menu=archivo)
-        nuevoMenu.add_cascade(label="Borrar", menu=limpiar)
-        nuevoMenu.add_cascade(label="CRUD", menu=crud)
+        nuevoMenu.add_cascade(label="Archivo", menu=archivo)
         nuevoMenu.add_cascade(label="Ayuda", menu=ayuda)
 
         return nuevoMenu
@@ -396,9 +393,9 @@ class RegFrame(DatosPacienteFrame):
         self.__img = ImgFrame(self, tk.PhotoImage(file="./img/reg.png"), 5, "Registro de Paciente")        
 
         # botones
-        botonL = tk.Button(
-            self, text="Limpiar campos", bg="white", fg="#205375", font=("Arial"), 
-            command=self._limpiaCampos
+        botonC = tk.Button(
+            self, text="Cancelar", bg="white", fg="#205375", font=("Arial"), 
+            command=lambda:root.cambiaFrame(self, root.main)
         )
         
         botonRe = tk.Button(
@@ -406,18 +403,18 @@ class RegFrame(DatosPacienteFrame):
             command=self.__registrarPac
         )
         
-        botonC = tk.Button(
-            self, text="Cancelar", bg="white", fg="#205375", font=("Arial"), 
-            command=lambda:root.cambiaFrame(self, root.main)
+        botonL = tk.Button(
+            self, text="Limpiar campos", fg="white", bg="#48a8e8", font=("Arial"), 
+            command=self._limpiaCampos
         )
         
 
         # desplegamos los widgets dentro del frame principal
         self.__img.grid(row=0, columnspan=2)
         self.datosFrame.grid(row=1, columnspan=2, pady=10)
-        botonL.grid(row=2, column=0, padx=10, pady=10)
-        botonRe.grid(row=3, column=0, padx=10, pady=10)
-        botonC.grid(row=4, column=0, padx=10, pady=10)
+        botonL.grid(row=2, columnspan=2)
+        botonC.grid(row=3, column=0, pady=10)
+        botonRe.grid(row=3, column=1)
 
 
         # desplegamos los widgets que están dentro del subframe datosFrame
@@ -513,23 +510,24 @@ class modFrame(DatosPacienteFrame):
         )
         busqueda = tk.Entry(self)
         botonBusq = tk.Button(
-            self, text="Buscar", command=lambda:self.muestraDatosPac(busqueda.get())
+            self, text="Buscar", command=lambda:self.muestraDatosPac(busqueda.get()), bg="#48a8e8", fg="white"
         )
         
 
-        # botones ubicados en el frame principal
+        # botones
+        frameBotones = tk.Frame(self)
         botonC = tk.Button(
-            self, text="Cancelar",  bg="white", fg="#205375", font=("Arial"),
+            frameBotones, text="Cancelar",  bg="white", fg="#205375", font=("Arial"),
             command=lambda:root.cambiaFrame(self, root.main)
         )
         
         botonM = tk.Button(
-            self, text="Modificar", bg="#205375", fg="white", font=("Arial"),
+            frameBotones, text="Modificar", bg="#205375", fg="white", font=("Arial"),
             command=self.__avisoModPac 
         )
 
         botonE = tk.Button(
-            self, text="Eliminar", fg = "white", bg="red", 
+            frameBotones, text="Eliminar", fg = "white", bg="red", font=("Arial"),
             command=self.__avisoEliminarPac
         )
 
@@ -540,9 +538,11 @@ class modFrame(DatosPacienteFrame):
         busqueda.grid(row=2, columnspan=2, pady=5)
         botonBusq.grid(row=3, columnspan=2)
         self.datosFrame.grid(row=4, columnspan=2, pady=10)
-        botonC.grid(row=5, column=0)
-        botonM.grid(row=5, column=1)
-        botonE.grid(row=5, column=2)
+
+        frameBotones.grid(row=5, columnspan=2, pady=5)
+        botonC.grid(row=0, column=0, padx=5)
+        botonM.grid(row=0, column=1, padx=5)
+        botonE.grid(row=0, column=2)
         
         
         # desplegamos los widgets que están dentro del subframe datosFrame
@@ -761,7 +761,8 @@ class ListaAtencionFrame(tk.Frame):
     """
     def __init__(self, root):
         super().__init__(root)
-        
+
+
         self.__img = ImgFrame(
             self, tk.PhotoImage(file="./img/list.png"), 7, "Atenciones de paciente"
         )
@@ -771,7 +772,7 @@ class ListaAtencionFrame(tk.Frame):
         )
         busqueda = tk.Entry(self)
         botonBusq = tk.Button(
-            self, text="Buscar", command=lambda:self.muestraAtencionPac(busqueda.get())
+            self, text="Buscar", command=lambda:self.muestraAtencionPac(busqueda.get()), fg="white", bg="#48a8e8"
         )
 
         self.__frameTabla = tk.Frame(self)
@@ -848,7 +849,7 @@ class CompraExamenFrame(tk.Frame):
             self, validate="key", 
             validatecommand=(self.register(self.__validaNum), "%P") 
         )
-        botonCancel = tk.Button(self, text="Cancelar", command=self.__cancelaCompra)        
+        botonCancel = tk.Button(self, text="Cancelar", command=self.__cancelaCompra, bg="red", fg="white")        
         separator = ttk.Separator(master=self, orient="horizontal")
 
         # grid
@@ -930,30 +931,41 @@ class GenAtencionFrame(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
 
+        self.__frameScrolleable = FrameScrolleable(self, vertical=True, ancho="250", alto="450")
+
         # widgets
-        self.__img = ImgFrame(self, tk.PhotoImage(file="./img/cross.png"), 10, "Generar atención")
-        labelRut = tk.Label(self, text="Rut paciente")
-        self.__rut = tk.Entry(self)
-        labelTipo = tk.Label(self, text="Tipo de servicio")
-        self.__tipoServ = tk.Entry(self)
-        labelMed = tk.Label(self, text="Nombre médico tratante")
-        self.__med = tk.Entry(self)
-        labelEspMed = tk.Label(self, text="Especialidad médico tratante")
-        self.__espMed = tk.Entry(self)
-        separator1 = ttk.Separator(master=self, orient="horizontal")
+        self.__img = ImgFrame(self.__frameScrolleable.getFrame(), tk.PhotoImage(file="./img/cross.png"), 10, "Generar atención")
+        labelRut = tk.Label(self.__frameScrolleable.getFrame(), text="Rut paciente")
+        self.__rut = tk.Entry(self.__frameScrolleable.getFrame())
+        labelTipo = tk.Label(self.__frameScrolleable.getFrame(), text="Tipo de servicio")
+        self.__tipoServ = tk.Entry(self.__frameScrolleable.getFrame())
+        labelMed = tk.Label(self.__frameScrolleable.getFrame(), text="Nombre médico tratante")
+        self.__med = tk.Entry(self.__frameScrolleable.getFrame())
+        labelEspMed = tk.Label(self.__frameScrolleable.getFrame(), text="Especialidad médico tratante")
+        self.__espMed = tk.Entry(self.__frameScrolleable.getFrame())
+        separator1 = ttk.Separator(self.__frameScrolleable.getFrame(), orient="horizontal")
         
         self.__fila = 10 # desde esta fila empieza a comprarse los examenes
-        self.__botonMas = tk.Button(self, text="Comprar examen", command=self.__agregaCompraFrame)
-        self.__botonTerminar = tk.Button(self, text="Terminar compra", command=self.__terminaCompra)
-        botonVolver = tk.Button(self, text="Volver", command=lambda:root.cambiaFrame(self, root.main))
-        botonRA = tk.Button(self, text="Registrar atención", command=self.__registrarAtencion)
+        self.__frameBotones = tk.Frame(self.__frameScrolleable.getFrame())
+        self.__botonMas = tk.Button(
+            self.__frameBotones, text="+", command=self.__agregaCompraFrame, bg="blue", fg="white", padx=5
+        )
+        self.__botonTerminar = tk.Button(
+            self.__frameBotones, text="Terminar compra", command=self.__terminaCompra, bg="#48a8e8", fg="white"
+        )
+        botonCancelar = tk.Button(
+            self.__frameBotones, text="Cancelar", command=self.__limpiaYCambia, bg="white", fg="#205375"
+        )
+        botonRA = tk.Button(
+            self.__frameBotones, text="Registrar atención", command=self.__registrarAtencion,  fg="white", bg="#205375"
+        )
         
         # lista de subframes de compra examen
         # se mostrarán desde fila = 10
         self.__listaSubFrames = []
 
         # mostrará la compra realizada durande la atención
-        self.__compra = tk.Label(self)
+        self.__compra = tk.Label(self.__frameScrolleable.getFrame())
         
         # contendrá la lista de examenes comprados
         self.__listaExamenesComprados = []
@@ -965,6 +977,8 @@ class GenAtencionFrame(tk.Frame):
         self.__compraTerminada = False
 
         # grid
+        self.__frameScrolleable.grid(row=0, column=0)
+
         self.__img.grid(row=0, column=0)
         labelRut.grid(row=1, column=0)
         self.__rut.grid(row=2, column=0, pady=5)
@@ -974,14 +988,15 @@ class GenAtencionFrame(tk.Frame):
         self.__med.grid(row=6, column=0, pady=5)
         labelEspMed.grid(row=7, column=0)
         self.__espMed.grid(row=8, column=0, pady=5)
-        separator1.grid(row=9, columnspan=1, sticky="we")
+        #separator1.grid(row=9, columnspan=1, sticky="we")
 
         # ...aqui deberian ir los subframes de compra de examenes...
 
-        self.__botonMas.grid(row=98, column=0, pady=5)
-        self.__botonTerminar.grid(row=99, column=0, pady=5)
-        botonVolver.grid(row=100, column=0)
-        botonRA.grid(row=101, column=0)
+        self.__frameBotones.grid(row=100, column=0, pady=5)
+        self.__botonMas.grid(row=0, columnspan=2, pady=5)
+        self.__botonTerminar.grid(row=1, columnspan=2, pady=5)
+        botonCancelar.grid(row=2, column=0)
+        botonRA.grid(row=2, column=1)
 
 
     def __agregaCompraFrame(self):
@@ -992,7 +1007,7 @@ class GenAtencionFrame(tk.Frame):
         No retorna nada.
         """
         root = self.nametowidget(self.winfo_parent())
-        frame = CompraExamenFrame(self, bd.leeDatosExamen(root.getConexion()))
+        frame = CompraExamenFrame(self.__frameScrolleable.getFrame(), bd.leeDatosExamen(root.getConexion()))
         frame.grid(row=self.__fila, column=0)
         self.__listaSubFrames.append(frame)
         self.__fila += 1
@@ -1178,8 +1193,19 @@ class GenAtencionFrame(tk.Frame):
             return True
         return False
 
+    def __limpiaYCambia(self):
+        
+        root = self.nametowidget(self.winfo_parent())
+        root.cambiaFrame(self, root.main)
 
+    def __limpiaCampos(self):
+        listaCampos = [
+        self.__rut, self.__tipoServ, self.__med, self.__espMed, self._fecha_nac, 
+        self._email, self._telefono
+        ]
 
+        for l in listaCampos:
+            l.delete(0, tk.END)
 
 
 class MainFrame(tk.Frame):
@@ -1371,7 +1397,37 @@ class TablaFrame(tk.Frame):
             tk.Label(self, text="No data").grid(row=0, column=0)
 
 
+class FrameScrolleable(tk.Frame):
+    def __init__(self, contenedor, vertical=False, horizontal=False, ancho="", alto=""):
+        super().__init__(contenedor)
 
+        self.__canvas = tk.Canvas(self, bd=0, highlightthickness=0)
+        if ancho != "":
+            self.__canvas.config(width=ancho)
+        if alto != "":
+            self.__canvas.config(height=alto)
+        self.__vscrollbar = None
+        if vertical:
+            self.__creaScrollVertical()
+            
+        self.__frameInterior = tk.Frame(self.__canvas)
+        self.__canvas.create_window(0, 0, window=self.__frameInterior, anchor=tk.NW)
+        self.__frameInterior.bind("<Configure>", self.__haceScroll)
+        self.__canvas.grid(row=0, column=0)
+
+    def __creaScrollVertical(self):
+        self.__vscrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL)
+        self.__vscrollbar.config(command=self.__canvas.yview)
+        self.__canvas["yscrollcommand"] = self.__vscrollbar.set
+        self.__vscrollbar.grid(row=0, column=1, sticky="NSW")
+
+
+    def __haceScroll(self, evento):
+        print(evento.width, evento.height)
+        self.__canvas.configure(scrollregion=self.__canvas.bbox("all"))
+
+    def getFrame(self):
+        return self.__frameInterior
 
 
 
