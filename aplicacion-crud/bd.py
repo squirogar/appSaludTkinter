@@ -377,7 +377,14 @@ def insertaAtencion(conn, tupla):
     # solo para obtener la fecha
     import datetime
     x = datetime.datetime.now()
-    fecha = "{}-{}-{} {}:{}".format(x.day, x.month, x.year, x.hour, x.minute)
+    hora = str(x.hour)
+    minuto = str(x.minute)
+    if x.hour < 10:
+        hora = "0" + hora
+    if x.minute < 10:
+        minuto = "0" + minuto
+
+    fecha = "{}-{}-{} {}:{}".format(x.day, x.month, x.year, hora, minuto)
 
     try:
         miCursor.execute(
@@ -386,6 +393,7 @@ def insertaAtencion(conn, tupla):
         )
         conn.commit()
         
+        print("atencion despues de insercion:",leeDatosAtencion(conn))
         return True
     except sq.Error as e:
         print(e.args[0])
@@ -576,7 +584,7 @@ def leeDatosExamen(conn, codigo = None, nombre = None):
     return resultado
 
 
-def leeDatosAtencion(conn, rut=None):
+def leeDatosAtencionPaciente(conn, rut):
     """
     Retorna la informacion de las atenciones de un paciente si es que se
     especifica un rut. Caso contrario, se retornan todas las atenciones
@@ -587,28 +595,37 @@ def leeDatosAtencion(conn, rut=None):
     miCursor = conn.cursor()
     resultado = []
     try:
-        if rut is None:
-            miCursor.execute(
-                f"""SELECT a.*, sum(ce.TOTAL) AS monto_total FROM ATENCION a, COMPRA_EXAMEN ce 
-                WHERE a.NUM_ATENCION = ce.NUMERO_ATENCION
-                GROUP BY a.NUM_ATENCION
-                ORDER BY a.FECHA_ATENCION ASC"""
-            )
-        else:
-            miCursor.execute(
-                f"""SELECT a.*, sum(ce.TOTAL) AS monto_total FROM ATENCION a, COMPRA_EXAMEN ce 
-                WHERE a.NUM_ATENCION = ce.NUMERO_ATENCION
-                AND RUT_PACIENTE = '{rut}'
-                GROUP BY a.NUM_ATENCION 
-                ORDER BY a.FECHA_ATENCION ASC"""
-            )
+        miCursor.execute(
+            f"""SELECT a.*, sum(ce.TOTAL) AS monto_total FROM ATENCION a, COMPRA_EXAMEN ce 
+            WHERE a.NUM_ATENCION = ce.NUMERO_ATENCION
+            AND RUT_PACIENTE = '{rut}'
+            GROUP BY a.NUM_ATENCION 
+            ORDER BY a.FECHA_ATENCION ASC"""
+        )
         resultado = miCursor.fetchall()
     except sq.Error as e:
         print(e.args[0])
     finally:
         miCursor.close()
         
-    print("datos atencion", resultado)
+    print("datos atencion PACIENTE", resultado)
+    return resultado
+
+
+def leeDatosAtencion(conn):
+    miCursor = conn.cursor()
+    resultado = []
+    try:
+        miCursor.execute(
+            f"""SELECT * FROM ATENCION"""
+        )
+        resultado = miCursor.fetchall()
+    except sq.Error as e:
+        print(e.args[0])
+    finally:
+        miCursor.close()
+        
+    print("datos atencion all", resultado)
     return resultado
 
 
@@ -645,7 +662,7 @@ def borraPaciente(conn, rut):
     """
     miCursor = conn.cursor()
     try:
-        atenciones = leeDatosAtencion(conn, rut)
+        atenciones = leeDatosAtencionPaciente(conn, rut)
 
         # si el paciente tiene atenciones las borramos
         if atenciones != []:
