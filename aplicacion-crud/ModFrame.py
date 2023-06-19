@@ -149,9 +149,7 @@ class modFrame(dpf.DatosPacienteFrame):
             )
         )
         rut = self._rut.get()
-        print(rut)
-
-
+        
         if val:
             if not self._camposNulos() and self._validaRut() and self._validaEmail() and self._validaFecha():
                 root = self.nametowidget(self.winfo_parent())
@@ -200,7 +198,7 @@ class modFrame(dpf.DatosPacienteFrame):
             message="¿Está seguro de eliminar este paciente? Esta acción no puede deshacerse."
         )
         rut = self._rut.get()
-        print(rut)
+        
         if val:
             if rut != "":
                 root = self.nametowidget(self.winfo_parent())

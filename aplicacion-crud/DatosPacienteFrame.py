@@ -94,7 +94,7 @@ class DatosPacienteFrame(tk.Frame):
         if self._prevision.get() == 0:
             return True
 
-        print("No hay campos nulos")
+        
         return False
 
     def _validaFecha(self):
@@ -109,7 +109,7 @@ class DatosPacienteFrame(tk.Frame):
             r"((^0?[1-9])|(^[12]\d)|(^3[01]))-((0?[1-9])|(1[0-2]))-((19\d\d$)|(2[01]\d\d$))", 
             self._fecha_nac.get()
         ):
-            print("true fecha")
+            
             return True
         return False
 
@@ -125,7 +125,7 @@ class DatosPacienteFrame(tk.Frame):
             return True
 
         nval = "".join(val.split(" "))
-        print(nval.isalpha())
+        
         return nval.isalpha()
     
     def _validaNum(self, val):
@@ -151,7 +151,7 @@ class DatosPacienteFrame(tk.Frame):
         """
         match = re.fullmatch(r"^\d{8}-[\dk]$", self._rut.get())
         if match:
-            print("true rut")
+            
             return True
         return False
 
@@ -168,7 +168,7 @@ class DatosPacienteFrame(tk.Frame):
             self._email.get()
         )
         if match:
-            print("true email")
             return True
+        
         return False
 

@@ -93,7 +93,6 @@ class ListaAtencionFrame(tk.Frame):
         self.__destruyeTabla()
 
     def __limpiaYCambia(self):
-        print("llama")
         self.limpia()
         root = self.nametowidget(self.winfo_parent())
         root.cambiaFrame(self, root.main)

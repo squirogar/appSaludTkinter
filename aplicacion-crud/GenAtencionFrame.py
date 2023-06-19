@@ -244,13 +244,7 @@ class GenAtencionFrame(tk.Frame):
             )
             if value:
                 # reunir los datos de la atencion
-                root = self.nametowidget(self.winfo_parent())
-                
-                print(f"""tupla a enviar ({self.__tipoServ.get()},
-                        {self.__med.get()},
-                        {self.__espMed.get()},
-                        {self.__rut.get()},
-                        {root.getSesion()[0]})""")
+                root = self.nametowidget(self.winfo_parent())                            
 
                 exito = bd.insertaAtencion(
                     root.getConexion(), 
@@ -265,10 +259,10 @@ class GenAtencionFrame(tk.Frame):
 
                 if exito:
                     numeroAtencion = bd.leeDatosAtencion(root.getConexion())[-1][0]
-                    print("Nro atencion", numeroAtencion)
+                    
                     for examenComprado in self.__listaExamenesComprados:
                         codigo = bd.leeDatosExamen(root.getConexion(), nombre = examenComprado[0])[0][0]
-                        print("codigo", codigo)
+                        
                         bd.insertaCompraExamen(
                             root.getConexion(), 
                             (numeroAtencion, codigo, int(examenComprado[2]), int(examenComprado[2]) * float(examenComprado[1]))
@@ -294,8 +288,8 @@ class GenAtencionFrame(tk.Frame):
         """
         match = re.fullmatch(r"^\d{8}-[\dk]$", val)
         if match:
-            print("true rut")
             return True
+        
         return False
 
     def __cambia(self):

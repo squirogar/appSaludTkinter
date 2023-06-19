@@ -78,7 +78,6 @@ class FrameScrolleable(tk.Frame):
 
 
     def __haceScroll(self, evento):
-        print(evento.width, evento.height)
         self.__canvas.configure(scrollregion=self.__canvas.bbox("all"))
 
     def getFrame(self):

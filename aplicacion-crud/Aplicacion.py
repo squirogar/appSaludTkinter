@@ -32,7 +32,7 @@ class Aplicacion(tk.Tk):
         super().__init__()
         self.title("SaludMas")
         self.protocol('WM_DELETE_WINDOW', self.avisoSalida)
-        #self.resizable(False, False)
+        self.resizable(False, False)
         #self.geometry("400x600")
 
         # contendrá un objeto Connection que se utiliza para conectar 

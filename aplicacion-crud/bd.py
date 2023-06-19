@@ -56,7 +56,7 @@ def autenticacion(conn, tupla):
             f"SELECT * FROM USUARIO WHERE NOMBRE_USUARIO = '{tupla[0]}' AND PASSWORD = '{tupla[1]}'"
         )
         user = miCursor.fetchone()
-        print("user", user)
+        
     except sq.Error as e:
         print(e.args[0])
     finally:    
@@ -393,7 +393,7 @@ def insertaAtencion(conn, tupla):
         )
         conn.commit()
         
-        print("atencion despues de insercion:",leeDatosAtencion(conn))
+        
         return True
     except sq.Error as e:
         print(e.args[0])
@@ -497,7 +497,7 @@ def leeDatosPacientes(conn, rut=None):
     finally:
         miCursor.close()
         
-    print("datos pacientes", resultado)
+    
     return resultado
 
 
@@ -520,7 +520,7 @@ def leeDatosUsuario(conn, usuario):
         print(e.args[0])
     finally:
         miCursor.close()
-    print("datos usuario", resultado)
+    
     
     return resultado
 
@@ -546,7 +546,7 @@ def leeDatosPrevision(conn, nombre=None):
     finally:
         miCursor.close()
         
-    print("datos prevision", resultado)
+    
     return resultado
 
 
@@ -579,7 +579,7 @@ def leeDatosExamen(conn, codigo = None, nombre = None):
         print(e.args[0])
     finally:
         miCursor.close()
-    print("datos examen", resultado)
+    
     
     return resultado
 
@@ -608,7 +608,7 @@ def leeDatosAtencionPaciente(conn, rut):
     finally:
         miCursor.close()
         
-    print("datos atencion PACIENTE", resultado)
+    
     return resultado
 
 
@@ -625,7 +625,7 @@ def leeDatosAtencion(conn):
     finally:
         miCursor.close()
         
-    print("datos atencion all", resultado)
+    
     return resultado
 
 
@@ -646,7 +646,7 @@ def leeDatosCompraExamen(conn, numero_atencion):
         print(e.args[0])
     finally:
         miCursor.close()
-    print("datos compra examen", resultado)
+    
     
     return resultado
 
@@ -784,54 +784,3 @@ if __name__ == "__main__":
             )
         )
     
-"""
-        insertaPaciente(conn, (
-            "12345678-9", "paciente prueba", "test", "calleprueba123", "10-10-1990",
-            "test@test.cl", 12345689, 1)
-        )
-
-
-        
-        
-        #actualiza pacientes
-        actualizaDatosPaciente(conn, "12345678-9", apellido = "pac apellido")
-
-        
-        insertaAtencion(
-            conn, ("unidad de examenes", "juan perez", "medicina general", "12345678-9", "danqui")
-        )
-        insertaAtencion(
-            conn, ("unidad de examenes", "Fido dido", "medicina general", "12345678-9", "danqui")
-        )
-        insertaAtencion(
-            conn, ("unidad de examenes", "Gary stu", "medicina general", "12345678-9", "danqui")
-        )
-
-        
-        #lee datos
-        leeDatosPacientes(conn)
-        leeDatosPacientes(conn, "12345678-9edw")
-        leeDatosUsuario(conn, "squirogar")
-        leeDatosPrevision(conn)
-        leeDatosPrevision(conn, "FONASA")
-        leeDatosExamen(conn)
-        leeDatosAtencion(conn, "12345678-9")
-        leeDatosAtencion(conn)
-        
-
-        insertaCompraExamen(conn, (1, "03.03.006", 2))
-        insertaCompraExamen(conn, (0, "03.03.006", 4))
-        insertaCompraExamen(conn, (0, "03.03.002", 1))
-
-        leeDatosCompraExamen(conn, 0)
-        leeDatosCompraExamen(conn, 1)
-
-        print("\n---Borra datos---")
-        borraPaciente(conn, "12345678-9")
-        leeDatosPacientes(conn)
-        leeDatosAtencion(conn)
-        leeDatosCompraExamen(conn, 1)
-        
-        borraExamen(conn, "03.03.002")
-        leeDatosExamen(conn)
-"""

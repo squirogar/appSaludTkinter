@@ -13,6 +13,7 @@ class Login(tk.Toplevel):
     """
     def __init__(self, root):
         super().__init__(root)
+        self.resizable(False, False)
         self.protocol('WM_DELETE_WINDOW', self.avisoSalida)
         self.__img = imgfr.ImgFrame(self, tk.PhotoImage(file="./img/login.png"), 5, "Autenticación")
         
@@ -54,7 +55,7 @@ class Login(tk.Toplevel):
         conn = bd.connectar()
         if conn is not None:
             user = bd.autenticacion(conn, (user, passwd))
-            print(user)
+            
             if user is not None:
                 root = self.nametowidget(self.winfo_parent())
                 root.conecta(conn)
