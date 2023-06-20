@@ -30,7 +30,7 @@ class Aplicacion(tk.Tk):
     
     def __init__(self):
         super().__init__()
-        self.title("SaludMas")
+        self.title("appSaludTkinter")
         self.protocol('WM_DELETE_WINDOW', self.avisoSalida)
         self.resizable(False, False)
         #self.geometry("400x600")

@@ -1,7 +1,7 @@
 import sqlite3 as sq
 
 """
-Módulo de base de datos para la aplicación SaludMás
+Módulo de base de datos para la aplicación appSaludTkinter
 
 1. Este módulo cuenta con las siguientes funciones diseñadas:
 - Conexion a base de datos
@@ -761,9 +761,9 @@ if __name__ == "__main__":
         crearTablaCompraExamen(conn)
 
         #inserta registros
-        insertaUsuario(conn, ("squirogar", "11111111-1", "Seb", "Quiroga", "Gerente", "1234"))
-        insertaUsuario(conn, ("Danqui", "22222222-2", "Dan", "Quiroga", "Administrador", "1234"))
-        insertaUsuario(conn, ("Mariaqui", "33333333-3", "Maria", "Quiroga", "Supervisor", "1234"))
+        insertaUsuario(conn, ("usuario1", "11111111-1", "User1", "Lastname1", "Gerente", "1234"))
+        insertaUsuario(conn, ("usuario2", "22222222-2", "User2", "Lastname2", "Administrador", "1234"))
+        insertaUsuario(conn, ("usuario3", "33333333-3", "User3", "Lastname3", "Supervisor", "1234"))
         
         insertaPrevision(conn, ("FONASA",))
         insertaPrevision(conn, ("ISAPRE",))

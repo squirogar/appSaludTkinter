@@ -12,3 +12,22 @@ La aplicación cuenta con las siguientes funciones:
 5. Modificación de datos de pacientes registrados
 6. Ver atenciones registradas de un paciente
 7. Generar una atención de un paciente. Acá se registrará la compra de examenes médicos.
+
+
+## Base de datos
+La base de datos utilizada es una base de datos generada por el gestor sqlite. Se puede identificar dentro del directorio de archivos como `data`.
+
+## Ejecución
+1. Si es la primera vez al usar el software, se debe ejecutar el archivo `bd.py` antes de la aplicación principal `main.py` para así crear la base de datos sqlite.
+
+```
+python bd.py
+```
+
+2. Ejecutar la aplicación `main.py`
+
+```
+python main.py
+```
+
+## Screenshots
