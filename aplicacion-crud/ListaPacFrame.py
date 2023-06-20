@@ -8,7 +8,7 @@ import ImgFrame as imgf
 import bd
 import Utilidades
 import pandas as pd
-
+import openpyxl
 
 
 class ListaPacFrame(tk.Frame):
