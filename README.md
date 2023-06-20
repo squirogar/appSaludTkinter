@@ -1,6 +1,6 @@
 # appSaludTkinter
 
-CRUD en Python usando la bibliioteca de interfaz gráfica tkinter.
+CRUD en Python usando la bibliioteca de interfaz gráfica tkinter. Esta aplicación es de escritorio y se puede usar completamente offline.
 
 La aplicación está pensada para ser usada por personal administrativo de un centro médico durante la atención que se le hace a un paciente en la compra de examenes.
 
